@@ -22,7 +22,7 @@ public class BinaryTree <T extends Comparable<T>>{
                 gravarArq.println(line);
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // teste
             e.printStackTrace();
         }
     }
