@@ -1,4 +1,9 @@
 
+// RAFAELA AMORIM PESSIN
+// TPA - 2023/1
+// ÁRVORE BINÁRIA
+
+// IMPORTANDO AS BIBLIOTECAS
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,9 +11,8 @@ import java.io.IOException;
 // import java.nio.file.Path;
 // import java.util.Arrays;
 import java.util.Scanner;
-
-import tree.Aluno;
-import tree.BinaryTree;
+import tree.Aluno;              // classe Aluno
+import tree.BinaryTree;         // classe BinaryTree
 
 public class Main {
     private static Scanner entrada = new Scanner(System.in);
@@ -17,6 +21,8 @@ public class Main {
         System.out.println(line);
     }
 
+    // Método para exibir as estatíticas da árvore binária
+    // Vai imprimir a quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
     private static void printStatiscts(BinaryTree<Aluno> tree){
         System.out.println("==========IMPRIMINDO ÁRVORE ==========");
         System.out.println("Quantidade de elementos: "+ tree.getAmountItems());
@@ -27,27 +33,30 @@ public class Main {
         System.out.println("=====ENCERRANDO IMPRESSÃO ÁRVORE =====\n");
     }
 
+    // Método para popular/preencher a árvore com os registros do arquivo gerado
     private static void fillTree(BinaryTree<Aluno> tree, String nameFile) throws IOException{
         System.out.println("===========CARREGANDO ÁRVORE==========");
         BufferedReader buffRead = new BufferedReader(new FileReader(nameFile));
 		String linha = "";
-        int qtdRegistros = Integer.parseInt(buffRead.readLine()); // Lê primeira linha que diz a quantidade de resgitros
-		for(int i = 1; i <= qtdRegistros; i++){
+        int qtdRegistros = Integer.parseInt(buffRead.readLine());           // Lê a primeira linha do arquivo que diz a quantidade de resgitros
+		for(int i = 1; i <= qtdRegistros; i++){                             // Faz um loop de 1 até a quantidade de linhas do arquivo para preencher a árvore
             linha = buffRead.readLine();
-            String[] line = linha.split(";");
+            String[] line = linha.split(";");                        // Quebra a linha do arquivo através do separador ";" para pegar matrícula, nome e nota
             
             int matricula = Integer.parseInt(line[0]);
             String nome = line[1];
             float nota = Float.parseFloat(line[2]);
             
-            Aluno student = new Aluno(matricula, nome, nota);
+            Aluno student = new Aluno(matricula, nome, nota);               // Cria uma variável do tipo Aluno que tem matrícula, nome, e nota
 
-            tree.insertItem(student);
+            tree.insertItem(student);                                       // Insere o Aluno na árvore
 		}
 		buffRead.close();
-        System.out.println("===========>CARREGOU ÁRVORE<==========\n");
+        System.out.println("===========>CARREGOU ÁRVORE<==========\n");   // Vai inserir todos os alunos do arquivo na árvore
     }
     
+    // Método para buscar um aluno por matrícula
+    // A saída é um print na tela: se achar a matrícula na árvore, imprime o nó; se não achar, imprime que a matrícula não existe
     private static void searchByMatricula(BinaryTree<Aluno> tree){
         System.out.println("===========BUSCANDO MATRICULA=========");
         System.out.println("Qual a matricula que deseja buscar? ");
@@ -58,24 +67,25 @@ public class Main {
         
         Aluno a = new Aluno(matricula, nome, nota);
         long start = System.currentTimeMillis();
-        Aluno item = tree.searchItem(a);
+        Aluno item = tree.searchItem(a);                // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
         long ends = System.currentTimeMillis();
 
         System.out.println(ends);
         System.out.println(start);
         System.out.println("Tempo de busca: " + (ends - start));
         
-        if(item != null){
+        if(item != null){                                         // Se a função searchItem() retornar o nó, é porque achou: printa o nó na tela
             println(item.toString());
         }else{
-            System.out.println("Matricula não existe");
+            System.out.println("Matricula não existe");         // Se a função searchItem() retornar null, é porque não achou: printa que não existe
         }
         System.out.println("======================================\n");
     }
 
+    // Método para incluir um aluno na árvore
     private static void includeAluno(BinaryTree<Aluno> tree){
         System.out.println("=============INSERINDO ALUNO==========");
-        System.out.println("Qual a matricula? ");
+        System.out.println("Qual a matricula? ");           // Solicita a matrícula, nome e nota 
         int matricula = entrada.nextInt();
         
         System.out.println("Qual o nome? ");
@@ -84,9 +94,9 @@ public class Main {
         System.out.println("Qual a nota? ");
         float nota = entrada.nextFloat();
         
-        Aluno aluno = new Aluno(matricula, nome, nota);
+        Aluno aluno = new Aluno(matricula, nome, nota);     // Cria um novo aluno com os dados de entrada
 
-        tree.insertItem(aluno);
+        tree.insertItem(aluno);                             // Insere o aluno na árvore
         System.out.println("======================================\n");
     }
 
@@ -113,7 +123,9 @@ public class Main {
         System.out.println("2 - Efetuar busca por matrícula");
         System.out.println("3 - Excluir por matrícula");
         System.out.println("4 - Incluir aluno");
-        System.out.println("5 - Sair");
+        System.out.println("5 - Efetuar busca por nome");
+        System.out.println("6 - Excluir por nome");
+        System.out.println("7 - Sair");
         System.out.println("======================================");
     }
 
@@ -125,7 +137,7 @@ public class Main {
     public static void main(String[] args){        
         BinaryTree<Aluno> tree = new BinaryTree<Aluno>();
         try {
-            fillTree(tree, "entradaOrdenada100.txt");
+            fillTree(tree, "entradaOrdenada100.txt");       // Passa o nome do arquivo gerado pelo GeradorArquivos
             // fillTree(tree, "entrada.txt");
             
             int selection;
@@ -134,24 +146,30 @@ public class Main {
                 selection = getSelection();
                 switch (selection) {
                     case 1:
-                        printStatiscts(tree);
+                        printStatiscts(tree);           // Exibe as estatísticas: quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
                         break;
                     case 2:
-                        searchByMatricula(tree);
+                        searchByMatricula(tree);        // Busca por matrícula
                         break;
                     case 3:
-                        deleteByMatricula(tree);
+                        deleteByMatricula(tree);        // Exclusão por matrícula
                         break;
                     case 4:
-                        includeAluno(tree);
+                        includeAluno(tree);             // Incluir aluno
                         break;
-                    case 5:
-                        sair(tree); 
+                    // case 5:
+                    //     searchByNome(tree);          // Busca por nome
+                    //     break;
+                    // case 6:
+                    //     deleteByNome(tree);          // Exclusão por nome
+                    //     break;
+                    case 7:
+                        sair(tree);                     // Finaliza o programa
                         break;
                     default:
                         break;
                 }
-            } while(selection != 5);
+            } while(selection != 7);
         } catch (IOException e) {
             println("Erro ao abrir o arquivo");
         }

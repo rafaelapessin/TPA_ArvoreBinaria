@@ -1,84 +1,97 @@
-// Camila Volponi e Rubens Júnior
+// RAFAELA AMORIM PESSIN
+// TPA - 2023/1
+// ÁRVORE BINÁRIA
+
 package tree;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+// Classe <BinaryTre>
 public class BinaryTree <T extends Comparable<T>>{
-    private Node<T> root;
-    private T lesserNode, biggerNode, worstCase;
-    private int heightTree = 0, amountItems = 0;
+    private Node<T> root;                           // Raiz da árvore
+    private T lesserNode, biggerNode, worstCase;    // Menor nó, maior nó, pior caso
+    private int heightTree = 0, amountItems = 0;    // Altura da árvore, quantidade de itens
 
+    // Estrutura da árvore, setando tudo para null
     public BinaryTree(){
         this.root = null;
         this.lesserNode = null;
         this.biggerNode = null;
     }
     
+    // Método para escrever no arquivo de saída <saida_EM_ORDEM.txt>
     public static void writeOutputInFile(String line){
         try (FileWriter arq = new FileWriter("saida_EM_ORDEM.txt", true)) {
             try (PrintWriter gravarArq = new PrintWriter(arq)) {
                 gravarArq.println(line);
             }
         } catch (IOException e) {
-            // teste
             e.printStackTrace();
         }
     }
 
+    // Método para inserir um objeto na árvore
     private void insert(Node<T> root, Node<T> item){
-        int result = item.getValue().compareTo((root.getValue()));
-        if(result == 0){
-            // se for igual atualizar dados
-            this.root = item;
+        int result = item.getValue().compareTo((root.getValue()));  // Compara os nós (elemento de entrada com o atual a ser comparado)
+        if(result == 0){                                            // Aqui retorna 0: os elementos são iguais
+            this.root = item;                                       // Se for igual, atualizar dados
         }else{
-            if(result < 0){
+            if(result < 0){                                         // Aqui retorna -1: A matrícula atual (de entrada do usuário) é menor que matrícula do nó que está sendo comparado
                 if(root.getLeftChild() == null){
                     root.setLeftChild((item));
                 } else {
-                    insert(root.getLeftChild(), item);
+                    insert(root.getLeftChild(), item);              // Se for menor, insere no filho a esquerda
                 }
-            } else {
+            } else {                                                // Aqui retorna 1: A matrícula atual (de entrada do usuário) é maior que matrícula do nó que está sendo comparado
                 if(root.getRightChild() == null){
                     root.setRightChild((item));
                 } else {
-                    insert(root.getRightChild(), item);
+                    insert(root.getRightChild(), item);             // Se for maior, insere no filho a direita
                 }
             }
         }
     }
 
+    // Método para inserir um objeto na árvore
     public void insertItem(T item) {
         //TO-DO: Implementar método de inserção
-        Node<T> newNode = new Node<T>(item);
-        if(this.root != null){
+        Node<T> newNode = new Node<T>(item);        // Cria um novo nó
+        if(this.root != null){                      // Se o nó for diferente de nulo, chama a função de inserção
             insert(this.root, newNode);
-        } else {
+        } else {                                    // Senão, cria o nó
             this.root = newNode;
         }
-        this.amountItems++;
+        this.amountItems++;                         // Após inserir um elemento, incrementa a quantidade de elementos
     }
 
-    private T search(Node<T> root, T item){
+    // Pesquisa se o nome ou matrícula está na árvore
+    // Se o elemento estiver na árvore, retorna o nó
+    // Senão, retorna null
+    private T search(Node<T> root, T item){                     // Passa a raiz e o elemento
         if(root != null){
-            int result = item.compareTo(root.getValue());
-            if(result == 0){
+            int result = item.compareTo(root.getValue());       // Compara o elemento atual com o nó comparado
+            if(result == 0){                                    // Se for igual, pega o valor
                 return root.getValue();
-            } else if(result < 0){
+            } else if(result < 0){                              // Se for menor, chama a função de busca e pega o filho a esquerda
                 return search(root.getLeftChild(), item);
             } else {
-                return search(root.getRightChild(), item);
+                return search(root.getRightChild(), item);      // Se for maior, chama a função de busca e pega o filho a direita
             }
         }else {
             return null;
         }
     }
 
+    // A função retorna o nó, se a matrícula ou o nome (genérico) existirem, senão retorna null
+    // Passa o nome ou a matrícula para a função search() e procura se está na árvore
     public T searchItem(T item) {
+        // System.out.println("matriculaaaaa"+ search(this.root, item));
         return search(this.root, item);
     }
 
+    // Método que verifica se tem filho
     // Retorna  2 se tiver dois filhos
     // Retorna  1 se tiver 1 filho que esteja à esquerda
     // Retorna  0 se tiver 1 filho que esteja à direita
@@ -95,6 +108,7 @@ public class BinaryTree <T extends Comparable<T>>{
         }
     }
 
+    // Método para remover filhos, tanto a esquerda, quanto a direita
     // Retorna  0 se não removerá
     // Retorna -1 se for o filho à esquerda
     // Retorna  1 se for o filho à direita
@@ -103,52 +117,60 @@ public class BinaryTree <T extends Comparable<T>>{
         if(child != null){
             int result = child.getValue().compareTo(item);
             if(result == 0){
-                return -1;
+                return -1;          // Remove filho a esquerda
             }
             child = dad.getRightChild();
             result = child.getValue().compareTo(item);
             if(result == 0){
-                return 1;
+                return 1;           // Remove filho a direta
             }
         }
-        return 0;
+        return 0;                   // Não remove filho
     }
 
+    // Método para remover filho, passando o nó e a posição (1 ou -1)
+    // 1 será filho a direita; -1 será filho a esquerda
     private void removeChild(Node<T> root, Node<T> child, int lado){
         int childHaveChild;
-        childHaveChild = haveChild(child);
-        if(childHaveChild == 2){ // O filho tiver 2 filhos
+        childHaveChild = haveChild(child);  // verifica se o nó tem filhos
+        if(childHaveChild == 2){    // Se filho tiver 2 filhos
             if(lado == -1){
-                root.setLeftChild(child.getLeftChild());
+                root.setLeftChild(child.getLeftChild());        // Atribui valor do filho a esquerda
             } else if(lado == 1){
-                root.setRightChild(child.getLeftChild());
+                root.setRightChild(child.getLeftChild());       // Atribui valor do filho a direita
             }
-            insert(this.root, child.getRightChild());
-        } else if(childHaveChild == 1){ // O filho tiver apenas 1 filho à esquerda
+            insert(this.root, child.getRightChild());           // Insere filho a direita
+        } else if(childHaveChild == 1){     // O filho tiver apenas 1 filho à esquerda
             if(lado == -1){
-                root.setLeftChild(child.getLeftChild());
+                root.setLeftChild(child.getLeftChild());        // Atribui valor do filho a esquerda
             } else if(lado == 1) {
-                root.setRightChild(child.getLeftChild());
+                root.setRightChild(child.getLeftChild());       // Atribui valor do filho a direita
             }
-        } else if(childHaveChild == 0){ // O filho tiver apenas 1 filho à direita
+        } else if(childHaveChild == 0){     // O filho tiver apenas 1 filho à direita
             if(lado == -1){
-                root.setLeftChild(child.getRightChild());
+                root.setLeftChild(child.getRightChild());       // Atribui valor do filho a esquerda
             } else if(lado == 1) {
-                root.setRightChild(child.getRightChild());
+                root.setRightChild(child.getRightChild());      // Atribui valor do filho a direita
             }
-        } else { // O filho não ter filhos
+        } else { // O filho não ter filhos, seta pra null
             root.setLeftChild(null);
             root.setRightChild(null);
         }
     }
 
+    // Método para remover filho a esquerda
+    // Chama o método removeChild() passando o filho a esquerda e a posição de remoção -1
     private void removeLeftChild(Node<T> root){
         removeChild(root, root.getLeftChild(), -1);
     }
+
+    // Método para remover filho a direita
+    // Chama o método removeChild() passando o filho a direita e a posição de remoção 1
     private void removeRightChild(Node<T> root){
         removeChild(root, root.getRightChild(), 1);
     }
 
+    // Método para remover a raiz
     private void removeRoot(){
         int haveChild = haveChild(this.root);
         if(haveChild == 2){
