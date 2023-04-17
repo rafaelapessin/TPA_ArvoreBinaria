@@ -169,42 +169,44 @@ public class BinaryTree <T extends Comparable<T>>{
     private void removeRightChild(Node<T> root){
         removeChild(root, root.getRightChild(), 1);
     }
-
+    
     // Método para remover a raiz
     private void removeRoot(){
-        int haveChild = haveChild(this.root);
-        if(haveChild == 2){
+        int haveChild = haveChild(this.root);                   // Retorna se o nó tem filhos
+        if(haveChild == 2){                                     // Se o nó tiver 2 filhos, a raiz, recebe o filho a esquerda e chama o método de inserção
             this.root = this.root.getLeftChild();
             insert(this.root, this.root.getRightChild());
-        } else if(haveChild == 1){
+        } else if(haveChild == 1){                              // Se o nó tiver 1 filho que esteja à esquerda, a raiz recebe o filho a esquerda
             this.root = this.root.getLeftChild();
         } else if (haveChild == 0){
-            this.root = this.root.getRightChild();
-        } else {
+            this.root = this.root.getRightChild();              // Se o nó tiver 1 filho que esteja à direita, a raiz recebe o filho a direta
+        } else {                                                // Se o nó não tiver dois filhos, retorna null para a raiz
             this.root = null;
         }
     }
+
+    // Método para remover o nó
     private void remove(Node<T> root, T item){
         if(root != null){
             int result = item.compareTo(root.getValue());
             // System.out.println(String.format("result = %d", result));
-            if(result == 0){ // só vai acontecer caso deseje remover a root
+            if(result == 0){                            // Só vai acontecer caso deseje remover a raiz
                 int childRemove = anyOfMyChildWillBeRemoved(root, item);
-                if(childRemove == -1){ // caso do filho esquerdo do nó atual ser removido
+                if(childRemove == -1){                  // Caso do filho esquerdo do nó atual ser removido
                     removeLeftChild(root);
-                } else if(childRemove == 1){ // caso do filho direito do nó atual ser removido
+                } else if(childRemove == 1){            // Caso do filho direito do nó atual ser removido
                     removeRightChild(root);
                 }
             } else {
                 int childRemove = anyOfMyChildWillBeRemoved(root, item);
                 if(result < 0){
-                    if(childRemove == -1){ // caso do filho esquerdo do nó atual ser removido
+                    if(childRemove == -1){              // Caso do filho esquerdo do nó atual ser removido
                         removeLeftChild(root);
                     } else {
                         remove(root.getLeftChild(), item);
                     }
                 } else {
-                    if(childRemove == 1){ // caso do filho direito do nó atual ser removido
+                    if(childRemove == 1){               // Caso do filho direito do nó atual ser removido
                         removeRightChild(root);
                     } else {
                         remove(root.getRightChild(), item);
@@ -214,9 +216,10 @@ public class BinaryTree <T extends Comparable<T>>{
         }
     }
 
+    // Método para remover um elemento da árvore
     public void removeItem(T item) {
-        if(this.amountItems <= 0){
-            return; // impede falhas para caso de árvore vazia
+        if(this.amountItems <= 0){          // Verifica a quantidade de itens da árvore e impede falhas para caso de árvore vazia
+            return;         
         }
         // TO-DO: Implementar método de remoção
         if(item.compareTo(this.root.getValue()) == 0){
@@ -224,65 +227,64 @@ public class BinaryTree <T extends Comparable<T>>{
         }else {
             remove(this.root, item);
         }
-        this.amountItems--;
+        this.amountItems--;                 // Atualiza a quantidade de itens da árvore (subtrai)
     }
 
+    // Método de caminhamento em ordem auxiliar
     private void walkInOrderAux(Node<T> root){
         // TO-DO: Implementar método de caminhar em ordem
         if(root != null){
-            walkInOrderAux(root.getLeftChild());
-            writeOutputInFile(root.getValue().toString());
-            walkInOrderAux(root.getRightChild());
+            walkInOrderAux(root.getLeftChild());                // Visita o filho a esquerda (chamada recursiva)
+            writeOutputInFile(root.getValue().toString());      // Escreve no arquivo de saída o nó corrente
+            walkInOrderAux(root.getRightChild());               // Visita o filho a direita (chamada recursiva)
         }
     }
 
+    // Método de caminhamento em ordem
     public void walkInOrder(){
         System.out.println("==Escrevendo em 'saida_EM_ORDEM.txt'==");
-        walkInOrderAux(this.root);
+        walkInOrderAux(this.root);                                          // Chama a função de caminhamento em ordem auxiliar
         System.out.println("======================================");
     }
 
+    // Método de caminhamento em nível auxiliar
+    // Usar altura da árvore para implementar
+    // Caminha descendo por cada filho, incrementando até cada nível
+    /* 
+    1. Começa da raiz
+    2. Gera um intervalo de inicio 0 (primeiro nível da árvore) até a altura da árvore
+    3. Desce e imprime as informações se o nó atual for daquela nível que tem que ser impresso naquele momento
+    3.1 Para saber o nó é do nível ou não, podemos passar uma variável na chamada informando o próximo nível
+    */
     private void walkInLevelAux(Node<T> root, int levelWanted, int levelCurrent){
-        // verficar se está no nível
-        if(levelWanted == levelCurrent){
+        if(levelWanted == levelCurrent){                                                    // Verifica se está no nível; se o nível procurado é igual o nível corrente, escreve no arquivo de saída
             writeOutputInFile(root.getValue().toString());
         } else if(levelCurrent < levelWanted) { 
-            int haveChild = haveChild(root);
-            if(haveChild == 2){
-                walkInLevelAux(root.getLeftChild(), levelWanted, levelCurrent + 1);
-                walkInLevelAux(root.getRightChild(), levelWanted, levelCurrent + 1);
-            } else if(haveChild == 1){
-                walkInLevelAux(root.getLeftChild(), levelWanted, levelCurrent + 1);
-            } else if(haveChild == 0){
-                walkInLevelAux(root.getRightChild(), levelWanted, levelCurrent + 1);
+            int haveChild = haveChild(root);                                                // Retorna o número de filhos
+            if(haveChild == 2){                                                             // Se tiver dois filhos
+                walkInLevelAux(root.getLeftChild(), levelWanted, levelCurrent + 1);         // Visita o filho a esquerda
+                walkInLevelAux(root.getRightChild(), levelWanted, levelCurrent + 1);        // Visita o filho a direita
+            } else if(haveChild == 1){                                                      // Se tiver 1 filho que esteja à esquerda
+                walkInLevelAux(root.getLeftChild(), levelWanted, levelCurrent + 1);         // Visita o filho a esquerda
+            } else if(haveChild == 0){                                                      // Se tiver 1 filho que esteja à direita
+                walkInLevelAux(root.getRightChild(), levelWanted, levelCurrent + 1);        // Visita o filho a direita
             }
         }
     }
-
-    // TO-DO: Implementar método de caminhar em nível
-    // Usar altura da árvore para implementar
-    // Caminha descendo por cada filho, incrementando até cada nível
-    /* psedo código
-    1. Começa da raiz
-    2. Gera um intervalo de inicio 0 (primeiro nível da árvore) 
-    até a altura da árvore
-    3. Desce e imprime as informações se o nó atual for
-    daquela nível que tem que ser impresso naquele momento
-    3.1 Para saber o nó é do nível ou não, podemos passar
-    uma variável na chamada informando o próximo nível
-    */
-
+  
+    // Método de caminhamento em nível
     public void walkInLevel(){
         System.out.println("=========Caminhando em Nível:=========");
-        updateHeightTree(this.root);
+        updateHeightTree(this.root);                                     // Atualiza a altura da árvore
         for(int i = 0;i <= this.heightTree;i++){
-            walkInLevelAux(this.root, i, 0);
+            walkInLevelAux(this.root, i, 0);                // Chama a função de caminhamento em nível auxiliar
         }
         System.out.println("=========>Caminhou em Nível<==========");
     }
 
+    // Método para saber a altura da árvore
     private int heightTree(Node<T> root, int level){
-        // TO-DO: Pegar quantos niveis possui a arvore
+        // Pega quantos níveis possui a arvore
         if(root != null){
             level++;
             if(root.getLeftChild() != null && root.getRightChild() != null){
@@ -302,65 +304,76 @@ public class BinaryTree <T extends Comparable<T>>{
         return level;
     }
 
+    // Método para atualizar a altura da árvore
     private void updateHeightTree(Node<T> root){
         this.heightTree = heightTree(root, -1);
     }
 
+    // Método que retona a altura da árvore atualizada
     public int getHeightTree() {
         updateHeightTree(this.root);
         return heightTree;
     }
 
+    // Método que retorna a quantidade de elementos da árvores
     public int getAmountItems(){
         return amountItems;
     }
 
+    // Método que atualiza o menor nó da árvore
     private void updateLesserNode(Node<T> root){
-        if(root.getLeftChild() != null){
+        if(root.getLeftChild() != null){                // A verificação é feita com os filhos a esquerda pois os elementos menores estão a esquerda da raiz
             updateLesserNode(root.getLeftChild());
         } else {
             this.lesserNode = root.getValue();
         }
     }
+
+    // Método que retorna o menor nó da árvore atualizado
     public T getLesserItem(){
         updateLesserNode(root);
         return lesserNode;
     }
     
+    // Método que atualiza o maior nó da árvore
     private void updateBiggerNode(Node<T> root){
-        if(root.getRightChild() != null){
+        if(root.getRightChild() != null){               // A verificação é feita com os filhos a direita pois os elementos maiores estão a direita da raiz
             updateBiggerNode(root.getRightChild());
         } else {
             this.biggerNode = root.getValue();
         }
     }
+
+    // Método que retorna o maior nó da árvore atualizado
     public T getBiggerItem(){
         updateBiggerNode(root);
         return biggerNode;
     }
 
+    // Método que atualiza o pior caso de busca
+    // O pior caso será aquele mais profundo na árvore
+    // Pega a raiz, anda nível por nível, verificando se os nós possui filhos abaixo
+    // Quando não tiver mais filhos, verifica quem tem o nível mais alto
     private void updateWorstCase(Node<T> root, int levelWanted, int levelCurrent){
         if(levelWanted == levelCurrent){
             this.worstCase = root.getValue();
         } else if(levelCurrent < levelWanted) { 
             int haveChild = haveChild(root);
-            if(haveChild == 2){
+            if(haveChild == 2){                                                             // Se tiver dois filhos
                 updateWorstCase(root.getLeftChild(), levelWanted, levelCurrent + 1);
                 updateWorstCase(root.getRightChild(), levelWanted, levelCurrent + 1);
-            } else if(haveChild == 1){
+            } else if(haveChild == 1){                                                      // Se tiver 1 filho que esteja à esquerda
                 updateWorstCase(root.getLeftChild(), levelWanted, levelCurrent + 1);
-            } else if(haveChild == 0){
+            } else if(haveChild == 0){                                                      // Se tiver 1 filho que esteja à direita
                 updateWorstCase(root.getRightChild(), levelWanted, levelCurrent + 1);
             }
         }
     }
     
+    // Método retorna o pior caso de busca
     public T getWorstCase(){
         updateHeightTree(this.root);
         updateWorstCase(this.root, this.heightTree, 0);
-        // pegar raiz
-        // andar nivel por nivel, verificando se els possui filhos abaixo
-        // quando não ter mais filhos, verifico quem tem o nivel mais alto
         return this.worstCase;
     }
 }
