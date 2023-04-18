@@ -34,6 +34,7 @@ public class Main {
         System.out.println("=====ENCERRANDO IMPRESSÃO ÁRVORE =====\n");
     }
 
+    // IMPLEMENTAR ESTE MÉTODO
     // Método para exibir as estatíticas da árvore binária
     // Vai imprimir a quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
     private static void printStatisctsNome(BinaryTree<Aluno> tree){
@@ -55,13 +56,12 @@ public class Main {
 		for(int i = 1; i <= qtdRegistros; i++){                             // Faz um loop de 1 até a quantidade de linhas do arquivo para preencher a árvore
             linha = buffRead.readLine();
             String[] line = linha.split(";");                        // Quebra a linha do arquivo através do separador ";" para pegar matrícula, nome e nota
-            
             int matricula = Integer.parseInt(line[0]);
             String nome = line[1];
             float nota = Float.parseFloat(line[2]);
             
             Aluno student = new Aluno(matricula, nome, nota);               // Cria uma variável do tipo Aluno que tem matrícula, nome, e nota
-
+            // System.out.println(student);
             tree.insertItem(student);                                       // Insere o Aluno na árvore
 		}
 		buffRead.close();
@@ -79,6 +79,7 @@ public class Main {
         float nota = 0;
         
         Aluno a = new Aluno(matricula, nome, nota);
+        System.out.println("testando "+ a);
         long start = System.currentTimeMillis();
         Aluno item = tree.searchItem(a);                           // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
         long ends = System.currentTimeMillis();
@@ -95,6 +96,7 @@ public class Main {
         System.out.println("======================================\n");
     }
 
+    // IMPLEMENTAR ESTE MÉTODO
     // Método para buscar um aluno por matrícula
     // A saída é um print na tela: se achar a matrícula na árvore, imprime o nó; se não achar, imprime que a matrícula não existe
     private static void searchByNome(BinaryTree<Aluno> tree){
@@ -154,6 +156,7 @@ public class Main {
         System.out.println("======================================\n");
     }
 
+    // IMPLEMENTAR ESTE MÉTODO
     // Excluindo um aluno por matrícula
     private static void deleteByNome(BinaryTree<Aluno> tree){
         System.out.println("=============DELETANDO ALUNO POR NOME==========");

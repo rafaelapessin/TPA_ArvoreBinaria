@@ -58,6 +58,7 @@ public class BinaryTree <T extends Comparable<T>>{
     public void insertItem(T item) {
         //TO-DO: Implementar método de inserção
         Node<T> newNode = new Node<T>(item);        // Cria um novo nó
+        // System.out.println(newNode.getValue());
         if(this.root != null){                      // Se o nó for diferente de nulo, chama a função de inserção
             insert(this.root, newNode);
         } else {                                    // Senão, cria o nó
@@ -72,6 +73,7 @@ public class BinaryTree <T extends Comparable<T>>{
     private T search(Node<T> root, T item){                     // Passa a raiz e o elemento
         if(root != null){
             int result = item.compareTo(root.getValue());       // Compara o elemento atual com o nó comparado
+            System.out.println("testando2222 "+ root.getValue());
             if(result == 0){                                    // Se for igual, pega o valor
                 return root.getValue();
             } else if(result < 0){                              // Se for menor, chama a função de busca e pega o filho a esquerda
