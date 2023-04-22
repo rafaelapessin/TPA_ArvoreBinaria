@@ -79,7 +79,7 @@ public class Main {
         float nota = 0;
         
         Aluno a = new Aluno(matricula, nome, nota);
-        System.out.println("testando "+ a);
+        // System.out.println("testando "+ a);
         long start = System.currentTimeMillis();
         Aluno item = tree.searchItem(a);                           // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
         long ends = System.currentTimeMillis();
@@ -108,7 +108,7 @@ public class Main {
         float nota = 0;
         
         Aluno a = new Aluno(matricula, nome, nota);
-        System.out.println("testando "+ a);
+        // System.out.println("testando "+ a);
         long start = System.currentTimeMillis();
         Aluno item = tree.searchItem(a);                           // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
         long ends = System.currentTimeMillis();
@@ -185,7 +185,8 @@ public class Main {
         System.out.println("5 - Exibir estatísticas por nome");
         System.out.println("6 - Busca por nome");
         System.out.println("7 - Excluir por nome");
-        System.out.println("8 - Sair");
+        System.out.println("8 - Caminhar em nível");
+        System.out.println("9 - Sair");
         System.out.println("======================================");
     }
 
@@ -197,7 +198,7 @@ public class Main {
     public static void main(String[] args){        
         BinaryTree<Aluno> tree = new BinaryTree<Aluno>();
         try {
-            fillTree(tree, "entradaOrdenada100.txt");       // Passa o nome do arquivo gerado pelo GeradorArquivos
+            fillTree(tree, "entradaBalanceada1000000.txt");       // Passa o nome do arquivo gerado pelo GeradorArquivos
             // fillTree(tree, "entrada.txt");
             
             int selection;
@@ -227,12 +228,15 @@ public class Main {
                         deleteByNome(tree);                     // Exclusão por nome
                         break;
                     case 8:
+                        tree.walkInLevel();                     // Caminhando em nível
+                        break;
+                    case 9:
                         sair(tree);                             // Finaliza o programa
                         break;
                     default:
                         break;
                 }
-            } while(selection != 8);
+            } while(selection != 9);
         } catch (IOException e) {
             println("Erro ao abrir o arquivo");
         }

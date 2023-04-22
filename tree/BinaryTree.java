@@ -245,7 +245,10 @@ public class BinaryTree <T extends Comparable<T>>{
     // Método de caminhamento em ordem
     public void walkInOrder(){
         System.out.println("==Escrevendo em 'saida_EM_ORDEM.txt'==");
+        long tempoInicial = System. currentTimeMillis();
         walkInOrderAux(this.root);                                          // Chama a função de caminhamento em ordem auxiliar
+        long tempoFinal = System. currentTimeMillis();
+        System.out.println("Tempo total para caminhamento em ordem em ms: " + (tempoFinal - tempoInicial));
         System.out.println("======================================");
     }
 
@@ -277,10 +280,13 @@ public class BinaryTree <T extends Comparable<T>>{
     // Método de caminhamento em nível
     public void walkInLevel(){
         System.out.println("=========Caminhando em Nível:=========");
+        long tempoInicial = System. currentTimeMillis();        
         updateHeightTree(this.root);                                     // Atualiza a altura da árvore
         for(int i = 0;i <= this.heightTree;i++){
             walkInLevelAux(this.root, i, 0);                // Chama a função de caminhamento em nível auxiliar
         }
+        long tempoFinal = System. currentTimeMillis();
+        System.out.println("Tempo total para caminhamento em nível em ms: " + (tempoFinal - tempoInicial));
         System.out.println("=========>Caminhou em Nível<==========");
     }
 
