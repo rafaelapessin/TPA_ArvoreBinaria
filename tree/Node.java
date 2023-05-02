@@ -46,4 +46,31 @@ public class Node <T extends Comparable<T>>{
     public Node<T> getRightChild() {
         return rightChild;
     }
+
+    public int obterAltura(){
+        return obterAltura(this);
+    }
+
+    private int obterAltura(Node<T> r){
+        if (r == null){
+            return -1;
+        }
+        else{
+            int alturaDireita = obterAltura(r.getRightChild());
+            int alturaEsquerda = obterAltura(r.getLeftChild());
+            if (alturaDireita > alturaEsquerda){
+                return alturaDireita + 1;
+            }
+            else{
+                return alturaEsquerda + 1;
+            }
+        }
+    }
+
+    public int fatorBalanceamento(){
+        return obterAltura(this.rightChild) - obterAltura(this.getLeftChild());
+    }
+
+    
+    
 }

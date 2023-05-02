@@ -60,7 +60,8 @@ public class Main {
             String nome = line[1];
             float nota = Float.parseFloat(line[2]);
             
-            Aluno student = new Aluno(matricula, nome, nota);               // Cria uma variável do tipo Aluno que tem matrícula, nome, e nota
+            Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+            Aluno student = new Aluno(matricula, nome, nota, ts);               // Cria uma variável do tipo Aluno que tem matrícula, nome, e nota
             // System.out.println(student);
             tree.insertItem(student);                                       // Insere o Aluno na árvore
 		}
@@ -78,7 +79,9 @@ public class Main {
         String nome = null;
         float nota = 0;
         
-        Aluno a = new Aluno(matricula, nome, nota);
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+
+        Aluno a = new Aluno(matricula, nome, nota, ts);
         // System.out.println("testando "+ a);
         long start = System.currentTimeMillis();
         Aluno item = tree.searchItem(a);                           // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
@@ -97,8 +100,8 @@ public class Main {
     }
 
     // IMPLEMENTAR ESTE MÉTODO
-    // Método para buscar um aluno por matrícula
-    // A saída é um print na tela: se achar a matrícula na árvore, imprime o nó; se não achar, imprime que a matrícula não existe
+    // Método para buscar um aluno por nome
+    // A saída é um print na tela: se achar o nome na árvore, imprime o nó; se não achar, imprime que a matrícula não existe
     private static void searchByNome(BinaryTree<Aluno> tree){
         System.out.println("===========BUSCANDO NOME=========");
         System.out.println("Qual a nome que deseja buscar? ");
@@ -107,7 +110,8 @@ public class Main {
         String nome = entrada.next();
         float nota = 0;
         
-        Aluno a = new Aluno(matricula, nome, nota);
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_NAME;
+        Aluno a = new Aluno(matricula, nome, nota, ts);
         // System.out.println("testando "+ a);
         long start = System.currentTimeMillis();
         Aluno item = tree.searchItem(a);                           // Pesquisa o elemento na árvore; retorna o nó se ele existir, senão retorna null
@@ -136,8 +140,9 @@ public class Main {
         
         System.out.println("Qual a nota? ");
         float nota = entrada.nextFloat();
-        
-        Aluno aluno = new Aluno(matricula, nome, nota);     // Cria um novo aluno com os dados de entrada
+
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+        Aluno aluno = new Aluno(matricula, nome, nota, ts);     // Cria um novo aluno com os dados de entrada
 
         tree.insertItem(aluno);                             // Insere o aluno na árvore
         System.out.println("======================================\n");
@@ -151,7 +156,8 @@ public class Main {
         String nome = null;
         float nota = 0;
         
-        Aluno aluno = new Aluno(matricula, nome, nota);
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+        Aluno aluno = new Aluno(matricula, nome, nota, ts);
         tree.removeItem(aluno);                     // Chama o método de remoção
         System.out.println("======================================\n");
     }
@@ -165,7 +171,8 @@ public class Main {
         String nome = entrada.next();
         float nota = 0;
         
-        Aluno aluno = new Aluno(matricula, nome, nota);
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+        Aluno aluno = new Aluno(matricula, nome, nota, ts);
         tree.removeItem(aluno);                     // Chama o método de remoção
         System.out.println("======================================\n");
     }

@@ -34,6 +34,7 @@ public class BinaryTree <T extends Comparable<T>>{
 
     // Método para inserir um objeto na árvore
     private void insert(Node<T> root, Node<T> item){
+
         int result = item.getValue().compareTo((root.getValue()));  // Compara os nós (elemento de entrada com o atual a ser comparado)
         if(result == 0){                                            // Aqui retorna 0: os elementos são iguais
             this.root = item;                                       // Se for igual, atualizar dados
@@ -58,7 +59,6 @@ public class BinaryTree <T extends Comparable<T>>{
     public void insertItem(T item) {
         //TO-DO: Implementar método de inserção
         Node<T> newNode = new Node<T>(item);        // Cria um novo nó
-        // System.out.println(newNode.getValue());
         if(this.root != null){                      // Se o nó for diferente de nulo, chama a função de inserção
             insert(this.root, newNode);
         } else {                                    // Senão, cria o nó
@@ -70,16 +70,18 @@ public class BinaryTree <T extends Comparable<T>>{
     // Pesquisa se o nome ou matrícula está na árvore
     // Se o elemento estiver na árvore, retorna o nó
     // Senão, retorna null
-    private T search(Node<T> root, T item){                     // Passa a raiz e o elemento
+    private T search(Node<T> root, T item){                     // Passa a raiz/nó (nó a nó) e o elemento
         if(root != null){
-            int result = item.compareTo(root.getValue());       // Compara o elemento atual com o nó comparado
-            System.out.println("testando2222 "+ root.getValue());
+            // 0 se a string for igual à outra string.
+            // < 0 se a string for menor que a outra string
+            // > 0 se a string for maior que a outra string (mais caracteres)
+            int result = item.compareTo(root.getValue()); 
             if(result == 0){                                    // Se for igual, pega o valor
                 return root.getValue();
-            } else if(result < 0){                              // Se for menor, chama a função de busca e pega o filho a esquerda
+            } else if(result < 0){                              // Se for menor, chama a função de busca e pega o filho a esquerda; busca a esquerda
                 return search(root.getLeftChild(), item);
             } else {
-                return search(root.getRightChild(), item);      // Se for maior, chama a função de busca e pega o filho a direita
+                return search(root.getRightChild(), item);      // Se for maior, chama a função de busca e pega o filho a direita; busca a direita
             }
         }else {
             return null;
@@ -89,9 +91,13 @@ public class BinaryTree <T extends Comparable<T>>{
     // A função retorna o nó, se a matrícula ou o nome (genérico) existirem, senão retorna null
     // Passa o nome ou a matrícula para a função search() e procura se está na árvore
     public T searchItem(T item) {
-        // System.out.println("matriculaaaaa"+ search(this.root, item));
+        // System.out.println("passando o item "+ item);
+        // System.out.println("get name "+item.getNome());
+        // System.out.println("tipo "+item.getClass().getSimpleName());
         return search(this.root, item);
     }
+
+    
 
     // Método que verifica se tem filho
     // Retorna  2 se tiver dois filhos
