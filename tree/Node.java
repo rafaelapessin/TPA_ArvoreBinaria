@@ -68,7 +68,7 @@ public class Node <T extends Comparable<T>>{
     }
 
     public int fatorBalanceamento(){
-        return obterAltura(this.rightChild) - obterAltura(this.getLeftChild());
+        return obterAltura(this.rightChild) - obterAltura(this.leftChild);
     }
 
     

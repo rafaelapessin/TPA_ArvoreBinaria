@@ -37,13 +37,6 @@ public class Aluno implements Comparable<Aluno>{
         // executa busca por nome
         if(this.typeSearch == TypesSearch.BY_NAME)
         {
-            // if(this.nome == a.getNome()){         // nome = entrada do usuário; a = nome do nó
-            //     return 0;
-            // } else if(this.nome < a.getNome()){
-            //     return -1;
-            // } else {
-            //     return 1;
-            // }
             return this.nome.compareTo(a.getNome());
         }
         // executa busca por matrícula

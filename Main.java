@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Scanner;
 import tree.Aluno;              // classe Aluno
 import tree.BinaryTree;         // classe BinaryTree
+import tree.AVLTree;            // classe BinaryTree
+import tree.ITree;              // classe abstrata ITree
 
 public class Main {
     private static Scanner entrada = new Scanner(System.in);
@@ -48,7 +50,7 @@ public class Main {
     }
 
     // Método para popular/preencher a árvore com os registros do arquivo gerado
-    private static void fillTree(BinaryTree<Aluno> tree, String nameFile) throws IOException{
+    private static void fillTree(ITree<Aluno> tree, String nameFile, String flag) throws IOException{
         System.out.println("===========CARREGANDO ÁRVORE==========");
         BufferedReader buffRead = new BufferedReader(new FileReader(nameFile));
 		String linha = "";
@@ -63,7 +65,14 @@ public class Main {
             Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
             Aluno student = new Aluno(matricula, nome, nota, ts);               // Cria uma variável do tipo Aluno que tem matrícula, nome, e nota
             // System.out.println(student);
-            tree.insertItem(student);                                       // Insere o Aluno na árvore
+            if(flag == "no_avl"){ 
+                tree.insertItem(student);               // Insere o Aluno na árvore não balanceada
+            }
+            else{
+                tree.insertElemento(student);           // Insere o Aluno na árvore AVL
+            }                                       
+
+            
 		}
 		buffRead.close();
         System.out.println("===========>CARREGOU ÁRVORE<==========\n");   // Vai inserir todos os alunos do arquivo na árvore
@@ -99,7 +108,6 @@ public class Main {
         System.out.println("======================================\n");
     }
 
-    // IMPLEMENTAR ESTE MÉTODO
     // Método para buscar um aluno por nome
     // A saída é um print na tela: se achar o nome na árvore, imprime o nó; se não achar, imprime que a matrícula não existe
     private static void searchByNome(BinaryTree<Aluno> tree){
@@ -107,7 +115,8 @@ public class Main {
         System.out.println("Qual a nome que deseja buscar? ");
         
         int matricula = 0;
-        String nome = entrada.next();
+        entrada.nextLine();                 // limpar a entrada
+        String nome = entrada.nextLine();
         float nota = 0;
         
         Aluno.TypesSearch ts = Aluno.TypesSearch.BY_NAME;
@@ -163,15 +172,17 @@ public class Main {
     }
 
     // IMPLEMENTAR ESTE MÉTODO
-    // Excluindo um aluno por matrícula
+    // Excluindo um aluno por nome
     private static void deleteByNome(BinaryTree<Aluno> tree){
         System.out.println("=============DELETANDO ALUNO POR NOME==========");
         System.out.println("Qual nome deseja excluir?");
+
         int matricula = 0;
-        String nome = entrada.next();
+        entrada.nextLine();                 // limpar a entrada
+        String nome = entrada.nextLine();
         float nota = 0;
         
-        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
+        Aluno.TypesSearch ts = Aluno.TypesSearch.BY_NAME;
         Aluno aluno = new Aluno(matricula, nome, nota, ts);
         tree.removeItem(aluno);                     // Chama o método de remoção
         System.out.println("======================================\n");
@@ -204,9 +215,11 @@ public class Main {
 
     public static void main(String[] args){        
         BinaryTree<Aluno> tree = new BinaryTree<Aluno>();
+        AVLTree<Aluno> avl_tree = new AVLTree<Aluno>();
+
         try {
-            fillTree(tree, "entradaBalanceada1000000.txt");       // Passa o nome do arquivo gerado pelo GeradorArquivos
-            // fillTree(tree, "entrada.txt");
+            fillTree(tree, "entradaOrdenada10.txt", "no_avl");            // Passa o nome do arquivo gerado pelo GeradorArquivos
+            fillTree(avl_tree, "entradaOrdenada10.txt", "avl");            // Passa o nome do arquivo gerado pelo GeradorArquivos
             
             int selection;
             do {
@@ -214,10 +227,12 @@ public class Main {
                 selection = getSelection();
                 switch (selection) {
                     case 1:
-                        printStatisctsMatricula(tree);           // Exibe as estatísticas por matrícula: quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
+                        // printStatisctsMatricula(tree);           // Exibe as estatísticas por matrícula: quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
+                        printStatisctsMatricula(avl_tree);
                         break;
                     case 2:
-                        searchByMatricula(tree);                // Busca por matrícula
+                        // searchByMatricula(tree);                // Busca por matrícula
+                        searchByMatricula(avl_tree); 
                         break;
                     case 3:
                         deleteByMatricula(tree);                // Exclusão por matrícula

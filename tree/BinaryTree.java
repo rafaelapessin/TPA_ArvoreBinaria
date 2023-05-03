@@ -7,9 +7,10 @@ package tree;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+// import tree.ITree;
 
 // Classe <BinaryTre>
-public class BinaryTree <T extends Comparable<T>>{
+public class BinaryTree <T extends Comparable<T>> extends ITree<T>{
     private Node<T> root;                           // Raiz da árvore
     private T lesserNode, biggerNode, worstCase;    // Menor nó, maior nó, pior caso
     private int heightTree = 0, amountItems = 0;    // Altura da árvore, quantidade de itens
@@ -33,7 +34,7 @@ public class BinaryTree <T extends Comparable<T>>{
     }
 
     // Método para inserir um objeto na árvore
-    private void insert(Node<T> root, Node<T> item){
+    protected Node<T> insert(Node<T> root, Node<T> item){
 
         int result = item.getValue().compareTo((root.getValue()));  // Compara os nós (elemento de entrada com o atual a ser comparado)
         if(result == 0){                                            // Aqui retorna 0: os elementos são iguais
@@ -53,6 +54,7 @@ public class BinaryTree <T extends Comparable<T>>{
                 }
             }
         }
+        return root;
     }
 
     // Método para inserir um objeto na árvore
@@ -389,5 +391,10 @@ public class BinaryTree <T extends Comparable<T>>{
         updateHeightTree(this.root);
         updateWorstCase(this.root, this.heightTree, 0);
         return this.worstCase;
+    }
+
+    @Override
+    public void insertElemento(T valor) {
+        throw new UnsupportedOperationException("Unimplemented method 'insertElemento'");
     }
 }

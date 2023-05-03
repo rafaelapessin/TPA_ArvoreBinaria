@@ -85,8 +85,10 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
 
     // @Override
     protected Node<T> adicionarRecursao(Node<T> raiz, Node<T> novoNo){
-        // raiz = super.adicionarRecursao(raiz, novoNo);
-        raiz = adicionarRecursao(raiz, novoNo);
+        raiz = super.insert(raiz, novoNo);
+
+        System.out.println(raiz.getLeftChild());
+        System.out.println(raiz.fatorBalanceamento());
         if (raiz.fatorBalanceamento() > 1){
             if(raiz.getRightChild().fatorBalanceamento() > 0){
                 raiz = this.rotacaoEsquerda(raiz);
