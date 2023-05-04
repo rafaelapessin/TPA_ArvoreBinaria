@@ -27,6 +27,7 @@ public class Main {
     // Método para exibir as estatíticas da árvore binária
     // Vai imprimir a quantidade de elementos, altura da árvore, maior elemento, menor elemento e pior caso
     private static void printStatisctsMatricula(BinaryTree<Aluno> tree){
+        // Aluno.TypesSearch ts = Aluno.TypesSearch.BY_MATRICULA;
         System.out.println("==========IMPRIMINDO ÁRVORE ==========");
         System.out.println("Quantidade de elementos: "+ tree.getAmountItems());
         System.out.println("Altura da árvore: "+ tree.getHeightTree());
@@ -220,7 +221,7 @@ public class Main {
         try {
             fillTree(tree, "entradaOrdenada10.txt", "no_avl");            // Passa o nome do arquivo gerado pelo GeradorArquivos
             fillTree(avl_tree, "entradaOrdenada10.txt", "avl");            // Passa o nome do arquivo gerado pelo GeradorArquivos
-            
+
             int selection;
             do {
                 printMenu();

@@ -18,9 +18,11 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
     // Rotação à esquerda
     private Node<T> rotacaoEsquerda(Node<T> r){
         Node<T> filho = r.getRightChild();
-        r.setRightChild(filho.getLeftChild());
-        filho.setLeftChild(r);
-
+        if (filho.getLeftChild() != null){
+            r.setRightChild(filho.getLeftChild());
+            filho.setLeftChild(r);
+        }
+        
         // atualizar altura
 
         return filho;       // retorna o nó que era filho; ao final da rotação o nó passou a ser a raiz
@@ -90,22 +92,52 @@ public class AVLTree<T extends Comparable<T>> extends BinaryTree<T> {
         System.out.println(raiz.getLeftChild());
         System.out.println(raiz.fatorBalanceamento());
         if (raiz.fatorBalanceamento() > 1){
-            if(raiz.getRightChild().fatorBalanceamento() > 0){
-                raiz = this.rotacaoEsquerda(raiz);
-            }
-            else{
-                raiz = this.rotacaoDiretaEsquerda(raiz);
+            if (raiz.getRightChild() != null) {
+                if(raiz.getRightChild().fatorBalanceamento() > 0){
+                    raiz = this.rotacaoEsquerda(raiz);
+                }
+                else{
+                    raiz = this.rotacaoDiretaEsquerda(raiz);
+                }
             }
         }
         else if (raiz.fatorBalanceamento() <=1 ){
-            if(raiz.getLeftChild().fatorBalanceamento() < 0){
-                raiz = this.rotacaoDireta(raiz);
-            }
-            else{
-                raiz = this.rotacaoEsquerdaDireta(raiz);
+            if (raiz.getLeftChild() != null) {
+                if(raiz.getLeftChild().fatorBalanceamento() < 0){
+                    raiz = this.rotacaoDireta(raiz);
+                }
+                else{
+                    raiz = this.rotacaoEsquerdaDireta(raiz);
+                }
             }
         }
         return raiz;
     }
+
+    // protected Node<T> adicionarRecursao(Node<T> raiz, Node<T> novoNo){
+    //     raiz = super.insert(raiz, novoNo);
+
+    //     System.out.println(raiz.getLeftChild());
+    //     // System.out.println(raiz.fatorBalanceamento());
+    //     if (super.fatorBalanceamento(raiz.getRightChild(), raiz.getLeftChild()) > 1){
+    //         if(super.fatorBalanceamento(raiz.getRightChild().getLeftChild(), raiz.getRightChild().getRightChild()) > 0){
+    //             raiz = this.rotacaoEsquerda(raiz);
+    //         }
+    //         else{
+    //             raiz = this.rotacaoDiretaEsquerda(raiz);
+    //         }
+    //     }
+    //     else if (super.fatorBalanceamento(raiz.getRightChild(), raiz.getLeftChild()) <=1 ){
+    //         if (raiz.getLeftChild() != null) {
+    //             if(super.fatorBalanceamento(raiz.getLeftChild().getLeftChild(), raiz.getLeftChild().getRightChild()) < 0){
+    //                 raiz = this.rotacaoDireta(raiz);
+    //             }
+    //             else{
+    //                 raiz = this.rotacaoEsquerdaDireta(raiz);
+    //             }
+    //         }
+    //     }
+    //     return raiz;
+    // }
 
 }

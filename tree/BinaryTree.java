@@ -18,8 +18,8 @@ public class BinaryTree <T extends Comparable<T>> extends ITree<T>{
     // Estrutura da árvore, setando tudo para null
     public BinaryTree(){
         this.root = null;
-        this.lesserNode = null;
-        this.biggerNode = null;
+        this.lesserNode = null;     // menor nó
+        this.biggerNode = null;     // maior nó
     }
     
     // Método para escrever no arquivo de saída <saida_EM_ORDEM.txt>
@@ -397,4 +397,30 @@ public class BinaryTree <T extends Comparable<T>> extends ITree<T>{
     public void insertElemento(T valor) {
         throw new UnsupportedOperationException("Unimplemented method 'insertElemento'");
     }
+
+    // Retorna a altura em relação a um nó específico
+    public int alturaNo(Node<T> root){
+        if (root == null){
+            return -1;
+        }
+        updateHeightTree(root);
+        return heightTree;
+    }
+
+    public int fatorBalanceamento(Node<T> rootEsquerda, Node<T> rootDireita){
+        int alturaEsquerda, alturaDireita;
+        if (rootEsquerda == null){
+            alturaEsquerda = -1; 
+        } else {
+            alturaEsquerda = alturaNo(rootEsquerda.getLeftChild());
+        }
+
+        if (rootDireita == null){
+            alturaDireita = -1; 
+        } else {
+            alturaDireita = alturaNo(rootEsquerda.getRightChild());
+        }
+        return alturaDireita - alturaEsquerda;
+    }
+
 }
